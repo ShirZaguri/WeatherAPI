@@ -6,5 +6,7 @@ import weatherService from "../services/weather.service";
 const { BAD_REQUEST, CREATED, OK } = StatusCodes;
 
 export async function getWeather(req: Request, res: Response) {
-  await weatherService.getWeather({ city: "vienna" } as weatherOptions);
+  res.json(
+    await weatherService.getWeather({ city: "vienna" } as weatherOptions)
+  );
 }
