@@ -7,6 +7,9 @@ const { BAD_REQUEST, CREATED, OK } = StatusCodes;
 
 export async function getWeather(req: Request, res: Response) {
   res.json(
-    await weatherService.getWeather({ city: "vienna" } as weatherOptions)
+    await weatherService.getWeather({
+      city: "vienna",
+      date: Number(req.params.date),
+    } as weatherOptions)
   );
 }
