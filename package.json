@@ -4,10 +4,6 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-<<<<<<< HEAD
-=======
-    "start": "node ./src/index.ts",
->>>>>>> 006be82ff92ed9bf7200f83cafeaa1701b14c479
     "build": ".\\node_modules\\.bin\\ts-node build.ts",
     "lint": "eslint . --ext .ts",
     "start": "node -r module-alias/register ./dist --env=production",
