@@ -10,6 +10,10 @@ export default class weatherService {
     const DAY_WEATHER_URL = `${ACCU_WEATHER_BASE_URL}/${WEATHER_TYPE}/328328?day=${DAYS_FROM_TODAY}`;
 
     let weathersDivs;
+
+    const a = await axios.get("https://www.google.co.il/?hl=iw");
+    console.log("3");
+
     try {
       weathersDivs = await axios.request({
         method: "GET",
