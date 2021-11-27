@@ -11,8 +11,8 @@ export default class weatherService {
 
     let weathersDivs;
 
-    const a = await axios.get("https://www.google.co.il/?hl=iw");
-    console.log("3");
+    const a = await axios.get(DAY_WEATHER_URL);
+    console.log(a);
 
     try {
       weathersDivs = await axios.request({
