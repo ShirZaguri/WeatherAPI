@@ -3,13 +3,10 @@ import { weather } from "@shared/weather.type";
 import axios from "axios";
 export default class weatherService {
   static getWeather = async (options: weatherOptions) => {
-    const ACCU_WEATHER_BASE_URL =
-      "https://www.accuweather.com/en/at/vienna/31868";
+    const ACCU_WEATHER_BASE_URL = `https://www.accuweather.com/en/gb/${options.city}/ec4a-2`;
     const WEATHER_TYPE = "daily-weather-forecast";
     const DAYS_FROM_TODAY = weatherService.daysFromToday(options.date);
-    const DAY_WEATHER_URL = `${ACCU_WEATHER_BASE_URL}/${WEATHER_TYPE}/31868?day=${
-      DAYS_FROM_TODAY + 1
-    }`;
+    const DAY_WEATHER_URL = `${ACCU_WEATHER_BASE_URL}/${WEATHER_TYPE}/328328?day=${DAYS_FROM_TODAY}`;
 
     const weathersDivs = await axios.request({
       method: "GET",
@@ -35,9 +32,37 @@ export default class weatherService {
       .split("<span")[0]
       .split(`\n\t\t\t`)[1]
       .split("&")[0];
-    const icon = divData.split('data-src="')[1].split('"')[0];
 
-    return { temp, icon };
+    const icon = divData
+      .split('data-src="')[1]
+      .split('"')[0]
+      .split("weathericons/")[1]
+      .split(".svg")[0];
+
+    const iconn = weatherService.iconFromSVGNumber(Number(icon));
+
+    return { temp, icon: weatherService.iconFromSVGNumber(Number(icon)) };
+  }
+
+  static iconFromSVGNumber(iconNumber: number): string {
+    const icons_map = [
+      { icon: "sunny", numbers: [0, 1, 2, 3, 4, 5, 6] },
+      { icon: "storm", numbers: [7, 8] },
+      {
+        icon: "cold",
+        numbers: [11, 12, 13, 14, 15, 18, 32, 33, 34, 35, 36, 37],
+      },
+      { icon: "snow", numbers: [19, 20, 21, 22, 23, 24, 25, 26, 29] },
+      { icon: "default", numbers: [] },
+    ];
+
+    let matchingWeather = icons_map.find((weather) =>
+      weather.numbers.includes(iconNumber)
+    );
+    matchingWeather = matchingWeather
+      ? matchingWeather
+      : icons_map.find((weather) => weather.icon === "default");
+    return matchingWeather.icon;
   }
 
   static daysFromToday(date: number): number {
@@ -46,6 +71,6 @@ export default class weatherService {
 
     const diff = TO.getTime() - TODAY.getTime();
     const diffInDays = Math.ceil(diff / (1000 * 3600 * 24));
-    return diffInDays;
+    return diffInDays + 1;
   }
 }
