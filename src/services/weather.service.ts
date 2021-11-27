@@ -11,6 +11,7 @@ export default class weatherService {
 
     let weathersDivs;
 
+    console.log(DAY_WEATHER_URL);
     const a = await axios.get(DAY_WEATHER_URL);
     console.log(a);
 
