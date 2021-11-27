@@ -4,6 +4,10 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+<<<<<<< HEAD
+=======
+    "start": "node ./src/index.ts",
+>>>>>>> 006be82ff92ed9bf7200f83cafeaa1701b14c479
     "build": ".\\node_modules\\.bin\\ts-node build.ts",
     "lint": "eslint . --ext .ts",
     "start": "node -r module-alias/register ./dist --env=production",
@@ -45,7 +49,10 @@
     "fs-extra": "^10.0.0",
     "http-status-codes": "^2.1.4",
     "jet-logger": "^1.0.6",
+<<<<<<< HEAD
     "module-alias": "^2.2.2",
+=======
+>>>>>>> 006be82ff92ed9bf7200f83cafeaa1701b14c479
     "node-fetch": "^3.0.0"
   },
   "devDependencies": {
