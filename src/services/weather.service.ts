@@ -3,6 +3,7 @@ import { weather } from "@shared/weather.type";
 import axios from "axios";
 export default class weatherService {
   static getWeather = async (options: weatherOptions) => {
+    console.log("1");
     const ACCU_WEATHER_BASE_URL = `https://www.accuweather.com/en/gb/${options.city}/ec4a-2`;
     const WEATHER_TYPE = "daily-weather-forecast";
     const DAYS_FROM_TODAY = weatherService.daysFromToday(options.date);
@@ -14,6 +15,8 @@ export default class weatherService {
       responseType: "arraybuffer",
       reponseEncoding: "binary",
     } as any);
+
+    console.log("2");
 
     const pageReq: string = weathersDivs.data.toString("latin1");
     const [dayDiv, nightDiv] = pageReq
