@@ -11,14 +11,11 @@ export default class weatherService {
 
     let weathersDivs;
 
-    console.log(DAY_WEATHER_URL);
-    const a = await axios.get(DAY_WEATHER_URL);
-    console.log(a);
-
     try {
       weathersDivs = await axios.request({
         method: "GET",
         url: DAY_WEATHER_URL,
+        timeout: 1000 * 10,
         responseType: "arraybuffer",
         reponseEncoding: "binary",
       } as any);
