@@ -4,5 +4,5 @@ import logger from "@shared/Logger";
 const PORT = 3000;
 
 app.listen(PORT, () => {
-  logger.info(`⚡️ [server]: Server is running at https://localhost:${PORT}`);
+  logger.info(`⚡️ [server]: Server is running at http://localhost:${PORT}`);
 });
