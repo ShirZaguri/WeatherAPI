@@ -4,7 +4,7 @@ import axios from "axios";
 export default class weatherService {
   static getWeather = async (options: weatherOptions) => {
     console.log("1");
-    const ACCU_WEATHER_BASE_URL = `http://www.accuweather.com/en/gb/${options.city}/ec4a-2`;
+    const ACCU_WEATHER_BASE_URL = `https://www.accuweather.com/en/gb/${options.city}/ec4a-2`;
     const WEATHER_TYPE = "daily-weather-forecast";
     const DAYS_FROM_TODAY = weatherService.daysFromToday(options.date);
     const DAY_WEATHER_URL = `${ACCU_WEATHER_BASE_URL}/${WEATHER_TYPE}/328328?day=${DAYS_FROM_TODAY}`;
