@@ -9,8 +9,9 @@ export default class weatherService {
     const DAYS_FROM_TODAY = weatherService.daysFromToday(options.date);
     const DAY_WEATHER_URL = `${ACCU_WEATHER_BASE_URL}/${WEATHER_TYPE}/328328?day=${DAYS_FROM_TODAY}`;
 
+    let weathersDivs;
     try {
-      const weathersDivs = await axios.request({
+      weathersDivs = await axios.request({
         method: "GET",
         url: DAY_WEATHER_URL,
         responseType: "arraybuffer",
