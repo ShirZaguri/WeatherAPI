@@ -1,61 +1,37 @@
 import { weatherOptions } from "@shared/weather-options.type";
-import { weather } from "@shared/weather.type";
 import axios from "axios";
 export default class weatherService {
   static getWeather = async (options: weatherOptions) => {
-    console.log("1");
-    const ACCU_WEATHER_BASE_URL = `https://www.accuweather.com/en/gb/${options.city}/ec4a-2`;
-    const WEATHER_TYPE = "daily-weather-forecast";
-    const DAYS_FROM_TODAY = weatherService.daysFromToday(options.date);
-    const DAY_WEATHER_URL = `${ACCU_WEATHER_BASE_URL}/${WEATHER_TYPE}/328328?day=${DAYS_FROM_TODAY}`;
+    // WEATHER API
+    const ACCU_WEATHER_BASE_URL = `http://api.weatherapi.com/v1/forecast.json?key=2645eb7abe144c09a0d85959212911&q=${options.city}&days=10&aqi=no&alerts=no`;
 
-    let weathersDivs;
+    let daysFromToday = weatherService.daysFromToday(options.date);
+    daysFromToday = daysFromToday < 4 ? daysFromToday - 1 : 2;
+    const weather = await axios.request({
+      method: "GET",
+      url: ACCU_WEATHER_BASE_URL,
+    } as any);
 
-    try {
-      weathersDivs = await axios.request({
-        method: "GET",
-        headers: {
-          "Content-Type": "text/plain",
-        },
-        url: DAY_WEATHER_URL,
-        timeout: 1000 * 10,
-        responseType: "arraybuffer",
-        reponseEncoding: "binary",
-      } as any);
-    } catch (err) {
-      console.log(err);
-    }
+    const hoursTemps = weather.data.forecast.forecastday[daysFromToday].hour;
+    const day = hoursTemps.reduce((prev: any, current: any) => {
+      return prev.temp_c > current.temp_c ? prev : current;
+    });
 
-    console.log("2");
-
-    const pageReq: string = weathersDivs.data.toString("latin1");
-    const [dayDiv, nightDiv] = pageReq
-      .split("half-day-card-header")
-      .slice(1, 4);
+    const night = hoursTemps.reduce((prev: any, current: any) => {
+      return current.temp_c > prev.temp_c ? prev : current;
+    });
 
     return {
-      day: weatherService.getWeatherFromWeatherDiv(dayDiv),
-      night: weatherService.getWeatherFromWeatherDiv(nightDiv),
+      day: {
+        temp: Math.round(day.temp_c),
+        icon: day.condition.icon,
+      },
+      night: {
+        temp: Math.round(night.temp_c),
+        icon: night.condition.icon,
+      },
     };
   };
-
-  static getWeatherFromWeatherDiv(divData: string): weather {
-    const temp = divData
-      .split('class="temperature">')[1]
-      .split("<span")[0]
-      .split(`\n\t\t\t`)[1]
-      .split("&")[0];
-
-    const icon = divData
-      .split('data-src="')[1]
-      .split('"')[0]
-      .split("weathericons/")[1]
-      .split(".svg")[0];
-
-    const iconn = weatherService.iconFromSVGNumber(Number(icon));
-
-    return { temp, icon: weatherService.iconFromSVGNumber(Number(icon)) };
-  }
 
   static iconFromSVGNumber(iconNumber: number): string {
     const icons_map = [
